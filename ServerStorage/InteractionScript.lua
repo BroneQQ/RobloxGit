@@ -1,5 +1,6 @@
 -- === InteractionScript v4.0 ===
--- Ten skrypt idzie do każdego modelu Brainrota w ServerStorage/Brainrots
+-- SKOPIUJ TO DO: Każdego modelu Brainrota w ServerStorage/Brainrots jako Script
+-- (Common_BrainrotA, Common_BrainrotB, Rare_BrainrotA, Epic_BrainrotA, Legendary_BrainrotA)
 
 local brainrotModel = script.Parent
 if not brainrotModel.PrimaryPart then
@@ -123,3 +124,4 @@ task.spawn(function()
         end
     end
 end)
+

@@ -1,5 +1,5 @@
 -- === CustomPromptHandler v2.0 ===
--- Ten skrypt idzie do StarterPlayer/StarterPlayerScripts jako LocalScript
+-- SKOPIUJ TO DO: StarterPlayerScripts/CustomPromptHandler jako LocalScript
 
 local ProximityPromptService = game:GetService("ProximityPromptService")
 local TweenService = game:GetService("TweenService")
@@ -68,3 +68,4 @@ ProximityPromptService.PromptButtonHoldEnded:Connect(function(prompt)
         end
     end
 end)
+

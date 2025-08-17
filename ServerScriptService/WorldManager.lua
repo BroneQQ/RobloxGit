@@ -1,4 +1,5 @@
 -- === WorldManager v2.1 ===
+-- SKOPIUJ TO DO: ServerScriptService > WorldManager (Script)
 
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
@@ -105,27 +106,50 @@ Players.PlayerAdded:Connect(function(player)
     
     local eggInventory = Instance.new("Folder", player)
     eggInventory.Name = "EggInventory"
+    
+    -- Dodaj poziom Backpack Upgrade (0 = podstawowy, 1-7 = upgrade'y)
+    local backpackLevel = Instance.new("IntValue", player)
+    backpackLevel.Name = "BackpackLevel"
+    backpackLevel.Value = 0 -- 0 = 29 slotów, 1 = 39, 2 = 49, ..., 7 = 99
 
     local playerUserId = "Player_" .. player.UserId
     local success, data = pcall(function()
         return playerDataStore:GetAsync(playerUserId)
     end)
     
-    if success and data then
-        coins.Value = data.Coins or 100
-        epicPity.Value = data.Pity_Epic or 0
-        legendaryPity.Value = data.Pity_Legendary or 0
-        
-        if data.EggInventory then
-            for _, eggName in ipairs(data.EggInventory) do
-                Instance.new("StringValue", eggInventory).Name = eggName
+    if success then
+        if data then
+            -- Dane istnieją - wczytaj je
+            coins.Value = data.Coins or 100
+            epicPity.Value = data.Pity_Epic or 0
+            legendaryPity.Value = data.Pity_Legendary or 0
+            backpackLevel.Value = data.BackpackLevel or 0
+            
+            if data.EggInventory then
+                for _, eggName in ipairs(data.EggInventory) do
+                    Instance.new("StringValue", eggInventory).Name = eggName
+                end
             end
+            
+            print("📊 Wczytano dane gracza:", player.Name, "Backpack Level:", backpackLevel.Value)
+        else
+            -- Dane nie istnieją (nowy gracz) - ustaw domyślne
+            coins.Value = 100
+            epicPity.Value = 0
+            legendaryPity.Value = 0
+            backpackLevel.Value = 0
+            print("🆕 Nowy gracz:", player.Name, "- ustawiono domyślne dane")
         end
     else
+        -- Błąd DataStore - ustaw domyślne i pokaż ostrzeżenie
         coins.Value = 100
         epicPity.Value = 0
         legendaryPity.Value = 0
-        warn("Nie udało się wczytać danych dla: " .. player.Name .. ". Błąd: " .. tostring(data))
+        backpackLevel.Value = 0
+        warn("❌ DataStore Error dla gracza:", player.Name)
+        warn("❌ Błąd:", tostring(data))
+        warn("❌ Sprawdź API Services w Game Settings!")
+        print("⚠️ Używam domyślnych danych dla gracza:", player.Name)
     end
 
     plotCounter = plotCounter + 1
@@ -156,6 +180,7 @@ Players.PlayerRemoving:Connect(function(player)
         Coins = player.leaderstats.Coins.Value,
         Pity_Epic = player.PityData.epicPity.Value,
         Pity_Legendary = player.PityData.legendaryPity.Value,
+        BackpackLevel = player.BackpackLevel.Value,
         EggInventory = {}
     }
     
@@ -167,7 +192,24 @@ Players.PlayerRemoving:Connect(function(player)
         playerDataStore:SetAsync(playerUserId, dataToSave)
     end)
     
-    if not success then
-        warn("Błąd zapisu dla " .. player.Name .. ": " .. tostring(err))
+    if success then
+        print("💾 Zapisano dane gracza:", player.Name)
+        print("💰 Coins:", dataToSave.Coins, "BackpackLevel:", dataToSave.BackpackLevel, "Jajka:", #dataToSave.EggInventory)
+    else
+        warn("❌ DataStore SAVE Error dla gracza:", player.Name)
+        warn("❌ Błąd:", tostring(err))
+        warn("❌ Sprawdź API Services w Game Settings!")
+        
+        -- Próbuj ponownie po 2 sekundach
+        wait(2)
+        local retrySuccess = pcall(function()
+            playerDataStore:SetAsync(playerUserId, dataToSave)
+        end)
+        
+        if retrySuccess then
+            print("✅ Ponowny zapis udany dla gracza:", player.Name)
+        else
+            warn("💀 Ostateczny błąd zapisu dla gracza:", player.Name)
+        end
     end
 end)

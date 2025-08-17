@@ -1,4 +1,5 @@
 -- === PlacementHandler v3.0 ===
+-- SKOPIUJ TO DO: ServerScriptService > PlacementHandler (Script)
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerStorage = game:GetService("ServerStorage")
@@ -13,13 +14,15 @@ local INCUBATION_TIMES = {
     ["Egg_Epic"] = 30,
     ["Egg_Legendary"] = 45
 }
+
+-- ⚠️ WAŻNE: WYPEŁNIJ TĘ TABELĘ dla wszystkich swoich modeli Brainrotów!
 local BRAINROT_Y_OFFSETS = {
     ["Common_BrainrotA"] = 2.5,
     ["Common_BrainrotB"] = 3,
     ["Rare_BrainrotA"] = 2.8,
     ["Epic_BrainrotA"] = 3.2,
     ["Legendary_BrainrotA"] = 4.0
-    -- WYPEŁNIJ TĘ TABELĘ dla wszystkich swoich modeli
+    -- DODAJ WSZYSTKIE SWOJE MODELE TUTAJ!
 }
 
 -- Inkubacja
@@ -106,3 +109,4 @@ local function onPlaceRequest(player, specificBrainrotName, position)
 end
 
 placeRequestEvent.OnServerEvent:Connect(onPlaceRequest)
+
