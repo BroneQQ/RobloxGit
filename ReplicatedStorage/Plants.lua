@@ -12,7 +12,7 @@ Plants.Types = {
         Model = "BrainrotPlant"
     },
     ["MegaBrainrot"] = {
-        Name = "MegaBrainrot", 
+        Name = "MegaBrainrot",
         GrowthTime = 60,
         Value = 25,
         Model = "MegaBrainrotPlant"
