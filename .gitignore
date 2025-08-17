@@ -1,0 +1,19 @@
+# Rojo
+/build/
+/*.rbxl
+/*.rbxlx
+
+# Node modules (if using any)
+node_modules/
+
+# Environment files
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

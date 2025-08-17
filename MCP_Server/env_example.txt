@@ -1,0 +1,23 @@
+# Roblox API Configuration
+ROBLOX_API_KEY=your_roblox_api_key_here
+ROBLOX_UNIVERSE_ID=your_universe_id_here
+ROBLOX_PLACE_ID=your_place_id_here
+
+# Server Configuration
+PORT=3000
+NODE_ENV=development
+
+# Security
+JWT_SECRET=your_jwt_secret_here
+ALLOWED_ORIGINS=http://localhost:3000,https://create.roblox.com
+
+# AI Configuration
+OPENAI_API_KEY=your_openai_key_if_needed
+AI_MODEL=claude-3-sonnet
+
+# Database (optional)
+DATABASE_URL=sqlite:./brainrot_data.db
+
+# Logging
+LOG_LEVEL=info
+LOG_FILE=./logs/server.log

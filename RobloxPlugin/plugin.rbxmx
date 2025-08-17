@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<roblox xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.roblox.com/roblox.xsd" version="4">
+	<Item class="Folder" referent="RBX0">
+		<Properties>
+			<string name="Name">BrainrotAIPlugin</string>
+		</Properties>
+		<Item class="Script" referent="RBX1">
+			<Properties>
+				<bool name="Disabled">false</bool>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">plugin</string>
+				<string name="ScriptGuid">{PLUGIN-GUID-HERE}</string>
+				<ProtectedString name="Source">-- Plugin source code goes here
+-- Copy contents from plugin.lua</ProtectedString>
+			</Properties>
+		</Item>
+		<Item class="ModuleScript" referent="RBX2">
+			<Properties>
+				<Content name="LinkedSource"><null></null></Content>
+				<string name="Name">Config</string>
+				<string name="ScriptGuid">{CONFIG-GUID-HERE}</string>
+				<ProtectedString name="Source">return {
+	MCP_SERVER_URL = "http://localhost:3000",
+	PLUGIN_NAME = "Brainrot AI Assistant",
+	PLUGIN_DESCRIPTION = "AI-powered game management for Brainrot Simulator",
+	VERSION = "1.0.0",
+	HEARTBEAT_INTERVAL = 30,
+	AUTO_CONNECT = false,
+	DEBUG_MODE = true
+}</ProtectedString>
+			</Properties>
+		</Item>
+	</Item>
+</roblox>
