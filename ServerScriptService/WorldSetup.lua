@@ -6,9 +6,9 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 -- Create basic world objects
 local function createWorld()
     local workspace = game.Workspace
-    
+
     print("Starting world setup...")
-    
+
     -- Check if ground already exists
     if workspace:FindFirstChild("Ground") then
         print("Ground already exists, skipping...")
@@ -23,7 +23,7 @@ local function createWorld()
         ground.Parent = workspace
         print("Ground created successfully!")
     end
-    
+
     -- Check if transporter already exists
     if workspace:FindFirstChild("Transporter") then
         print("Transporter already exists, skipping...")
@@ -37,7 +37,7 @@ local function createWorld()
         transporter.Material = Enum.Material.Neon
         transporter.BrickColor = BrickColor.new("Really blue")
         transporter.Parent = workspace
-        
+
         -- Add ProximityPrompt to transporter
         local prompt = Instance.new("ProximityPrompt")
         prompt.ObjectText = "Transporter"
@@ -46,7 +46,7 @@ local function createWorld()
         prompt.Parent = transporter
         print("Transporter created successfully!")
     end
-    
+
     -- Check if trees already exist
     if workspace:FindFirstChild("Tree1") then
         print("Tree1 already exists, skipping...")
@@ -62,7 +62,7 @@ local function createWorld()
         tree1.Parent = workspace
         print("Tree1 created successfully!")
     end
-    
+
     if workspace:FindFirstChild("Tree2") then
         print("Tree2 already exists, skipping...")
     else
@@ -76,7 +76,7 @@ local function createWorld()
         tree2.Parent = workspace
         print("Tree2 created successfully!")
     end
-    
+
     print("World setup completed!")
     print("Objects in workspace:")
     for _, child in pairs(workspace:GetChildren()) do
@@ -86,5 +86,8 @@ local function createWorld()
     end
 end
 
--- Run world setup
+-- Run world setup automatically when script runs
 createWorld()
+
+-- Return the function so it can be used with require() if needed
+return createWorld

@@ -1,12 +1,12 @@
--- === WorldManager v2.1 ===
--- SKOPIUJ TO DO: ServerScriptService > WorldManager (Script)
+-- === WorldManager z systemem jajek - KOPIA ZAPASOWA ===
+-- Ten plik zawiera działający kod z Roblox Studio
+-- Skopiuj ten kod do WorldManager w Roblox Studio jeśli coś się zepsuje
 
 local Players = game:GetService("Players")
 local ServerStorage = game:GetService("ServerStorage")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local DataStoreService = game:GetService("DataStoreService")
 
-local playerDataStore = DataStoreService:GetDataStore("PlayerBrainrotData_V2") -- Nowa wersja na wszelki wypadek
+print("=== WorldManager startuje ===")
 
 -- Szablony
 local plotTemplate = ServerStorage:WaitForChild("PlayerPlotTemplate")
@@ -80,6 +80,7 @@ local function spawnEggForPlayer(player)
         tw:Play()
 
         game:GetService("Debris"):AddItem(nE, TRAVEL_TIME)
+        print("🥚 Jajko", cN, "spawnowane dla", player.Name)
     end
 end
 
@@ -92,65 +93,31 @@ end
 
 -- Logika dołączania gracza
 Players.PlayerAdded:Connect(function(player)
+    print("Gracz dołączył:", player.Name)
+
     local leaderstats = Instance.new("Folder", player)
     leaderstats.Name = "leaderstats"
     local coins = Instance.new("IntValue", leaderstats)
     coins.Name = "Coins"
+    coins.Value = 100
 
     local pityData = Instance.new("Folder", player)
     pityData.Name = "PityData"
     local epicPity = Instance.new("IntValue", pityData)
     epicPity.Name = "epicPity"
+    epicPity.Value = 0
     local legendaryPity = Instance.new("IntValue", pityData)
     legendaryPity.Name = "legendaryPity"
+    legendaryPity.Value = 0
 
     local eggInventory = Instance.new("Folder", player)
     eggInventory.Name = "EggInventory"
 
-    -- Dodaj poziom Backpack Upgrade (0 = podstawowy, 1-7 = upgrade'y)
     local backpackLevel = Instance.new("IntValue", player)
     backpackLevel.Name = "BackpackLevel"
-    backpackLevel.Value = 0 -- 0 = 29 slotów, 1 = 39, 2 = 49, ..., 7 = 99
+    backpackLevel.Value = 0
 
-    local playerUserId = "Player_" .. player.UserId
-    local success, data = pcall(function()
-        return playerDataStore:GetAsync(playerUserId)
-    end)
-
-    if success then
-        if data then
-            -- Dane istnieją - wczytaj je
-            coins.Value = data.Coins or 100
-            epicPity.Value = data.Pity_Epic or 0
-            legendaryPity.Value = data.Pity_Legendary or 0
-            backpackLevel.Value = data.BackpackLevel or 0
-
-            if data.EggInventory then
-                for _, eggName in ipairs(data.EggInventory) do
-                    Instance.new("StringValue", eggInventory).Name = eggName
-                end
-            end
-
-            print("📊 Wczytano dane gracza:", player.Name, "Backpack Level:", backpackLevel.Value)
-        else
-            -- Dane nie istnieją (nowy gracz) - ustaw domyślne
-            coins.Value = 100
-            epicPity.Value = 0
-            legendaryPity.Value = 0
-            backpackLevel.Value = 0
-            print("🆕 Nowy gracz:", player.Name, "- ustawiono domyślne dane")
-        end
-    else
-        -- Błąd DataStore - ustaw domyślne i pokaż ostrzeżenie
-        coins.Value = 100
-        epicPity.Value = 0
-        legendaryPity.Value = 0
-        backpackLevel.Value = 0
-        warn("❌ DataStore Error dla gracza:", player.Name)
-        warn("❌ Błąd:", tostring(data))
-        warn("❌ Sprawdź API Services w Game Settings!")
-        print("⚠️ Używam domyślnych danych dla gracza:", player.Name)
-    end
+    print("Dane gracza utworzone:", player.Name)
 
     plotCounter = plotCounter + 1
     local newPlot = plotTemplate:Clone()
@@ -171,45 +138,7 @@ Players.PlayerAdded:Connect(function(player)
     end)
 
     task.spawn(playerSpawnLoop, player)
+    print("Działka, transporter i system jajek uruchomione dla:", player.Name)
 end)
 
--- Logika zapisu
-Players.PlayerRemoving:Connect(function(player)
-    local playerUserId = "Player_" .. player.UserId
-    local dataToSave = {
-        Coins = player.leaderstats.Coins.Value,
-        Pity_Epic = player.PityData.epicPity.Value,
-        Pity_Legendary = player.PityData.legendaryPity.Value,
-        BackpackLevel = player.BackpackLevel.Value,
-        EggInventory = {}
-    }
-
-    for _, eggItem in ipairs(player.EggInventory:GetChildren()) do
-        table.insert(dataToSave.EggInventory, eggItem.Name)
-    end
-
-    local success, err = pcall(function()
-        playerDataStore:SetAsync(playerUserId, dataToSave)
-    end)
-
-    if success then
-        print("💾 Zapisano dane gracza:", player.Name)
-        print("💰 Coins:", dataToSave.Coins, "BackpackLevel:", dataToSave.BackpackLevel, "Jajka:", #dataToSave.EggInventory)
-    else
-        warn("❌ DataStore SAVE Error dla gracza:", player.Name)
-        warn("❌ Błąd:", tostring(err))
-        warn("❌ Sprawdź API Services w Game Settings!")
-
-        -- Próbuj ponownie po 2 sekundach
-        wait(2)
-        local retrySuccess = pcall(function()
-            playerDataStore:SetAsync(playerUserId, dataToSave)
-        end)
-
-        if retrySuccess then
-            print("✅ Ponowny zapis udany dla gracza:", player.Name)
-        else
-            warn("💀 Ostateczny błąd zapisu dla gracza:", player.Name)
-        end
-    end
-end)
+print("WorldManager gotowy")

@@ -1,0 +1,21 @@
+[33mcommit d4ae7da76eb87fc473151851b9457d294cc44144[m
+Author: BroneQQ <bronski.dawid@gmail.com>
+Date:   Sun Aug 17 21:06:32 2025 +0200
+
+    Fix Rojo synchronization issues and add missing files
+
+ NAPRAWKA_ROJO.md                                |  95 [32m+++++++[m
+ ReplicatedStorage/ClickLogic.lua                | 103 [32m+++++++[m[31m-[m
+ ReplicatedStorage/Plants.lua                    |  36 [32m+++[m
+ ReplicatedStorage/ShowBackpackUpgradePrompt.lua |  11 [32m+[m
+ ServerScriptService/PlacementHandler.lua        |   6 [32m+[m[31m-[m
+ ServerScriptService/WorldManager.lua            |  64 [32m++++[m[31m-[m
+ ServerScriptService/WorldSetup.lua              |  59 [32m+++++[m
+ ServerStorage/InteractionScript.lua             |   4 [32m+[m[31m-[m
+ StarterGui/BackpackPromptGUI.lua                | 217 [32m++++++++++++++++[m
+ StarterGui/GamePassHandler.lua                  | 158 [32m++++++++++++[m
+ StarterGui/InventoryManager.lua                 | 324 [32m+++++++++++++++++++++[m[31m---[m
+ StarterGui/ProximityPromptsGui.lua              |  65 [32m+++++[m
+ StarterPlayerScripts/CustomPromptHandler.lua    |   3 [32m+[m[31m-[m
+ organize_files.bat                              |  43 [32m++++[m
+ 14 files changed, 1134 insertions(+), 54 deletions(-)
